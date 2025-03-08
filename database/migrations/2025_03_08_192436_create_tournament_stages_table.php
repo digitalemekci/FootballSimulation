@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('tournament_stages', function (Blueprint $table) {
             $table->id();
-            $table->string('stage');
+            $table->string('stage'); 
             $table->foreignId('home_team_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('away_team_id')->constrained('teams')->onDelete('cascade');
             $table->integer('home_score')->nullable();
             $table->integer('away_score')->nullable();
             $table->boolean('played')->default(false);
+            $table->foreignId('winner_team_id')->nullable()->constrained('teams')->onDelete('set null');
             $table->timestamps();
         });
     }
