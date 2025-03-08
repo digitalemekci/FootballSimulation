@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('losses')->default(0);
             $table->integer('goals_for')->default(0);
             $table->integer('goals_against')->default(0);
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('set null');
             $table->integer('points')->default(0);
             $table->timestamps();
         });
@@ -31,6 +33,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->dropForeign(['group_id']);
+            $table->dropColumn('group_id');
+        });
     }
 };
