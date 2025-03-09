@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('goals_against')->default(0);
             $table->unsignedBigInteger('group_id')->nullable();
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('set null');
+            $table->decimal('win_probability', 5, 2)->default(0);
             $table->integer('points')->default(0);
             $table->timestamps();
         });

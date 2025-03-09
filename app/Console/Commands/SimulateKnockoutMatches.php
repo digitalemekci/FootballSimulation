@@ -5,15 +5,17 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\TournamentStage;
 use App\Models\Team;
+use App\Http\Controllers\TournamentController;
 
 class SimulateKnockoutMatches extends Command
 {
     protected $signature = 'simulate:knockout-matches';
     protected $description = 'Simulate all knockout stage matches and update results';
 
-    public function __construct()
+    public function __construct(TournamentController $tournamentController)
     {
         parent::__construct();
+        $this->tournamentController = $tournamentController;
     }
 
     public function handle()
@@ -91,5 +93,9 @@ class SimulateKnockoutMatches extends Command
         }
 
         $this->info("All knockout matches have been simulated!");
+        // Şampiyonluk ihtimallerini güncelle
+        $this->tournamentController->updateWinProbability();
+
+        $this->info("✅ Championship odds updated!");
     }
 }
