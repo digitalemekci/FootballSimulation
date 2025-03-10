@@ -26,7 +26,7 @@ class CalculateGroupStandings extends Command
         foreach ($groups as $group) {
             $teams = $group->teams()
                 ->orderByDesc('points')
-                ->orderByDesc(DB::raw('goals_for - goals_against')) // 🔥 Güncellendi
+                ->orderByDesc(DB::raw('goals_for - goals_against'))
                 ->orderByDesc('goals_for')
                 ->get();
 

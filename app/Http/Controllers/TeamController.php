@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use GuzzleHttp\Client;
 use App\Models\Team;
 
@@ -69,4 +70,26 @@ class TeamController extends Controller
             'error' => 'Elo verisi alınamadı'
         ], 500);
     }
+
+
+    public function importTeams()
+    {
+        try {
+            // Artisan komutunu kuyrukta çalıştır, böylece API hızlı yanıt döner
+            dispatch(function () {
+                Artisan::call('import:champions-league-teams');
+                Log::info('Takımlar başarıyla içe aktarıldı.');
+            });
+
+            return response()->json(['message' => 'Takımlar yükleme işlemi başlatıldı!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Bir hata oluştu: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function getTeams()
+    {
+        return response()->json(\DB::table('teams')->get());
+    }
+
 }
